@@ -1,0 +1,12 @@
+[project]
+name = "py-build-example"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "example-package",
+]
+
+[tool.uv.sources]
+example-package = { url = "https://github.com/tkoncz/py-pkg-build-example/releases/download/v0.3.0/example_package-0.3.0.tar.gz" }
