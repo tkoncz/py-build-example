@@ -10,12 +10,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Configure Git to use PAT
+      - name: Configure Git credentials for private repos
         run: |
-          git config --global url."https://${{ secrets.GH_PAT }}@github.com/".insteadOf "https://github.com/"
+          git config --global credential.helper store
+          echo "https://${{ secrets.GH_PAT }}@github.com" > ~/.git-credentials
 
-      - name: Debug Git config
-        run: git config --get-regexp url
+      - name: Check Git authentication
+        run: |
+          git ls-remote https://github.com/tkoncz/py-private-pkg-build-example.git
 
       - name: Checkout
         uses: actions/checkout@v4
