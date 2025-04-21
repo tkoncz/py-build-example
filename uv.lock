@@ -10,11 +10,20 @@ sdist = { hash = "sha256:f71b9ff348cfb8655a88dd7e1732329fe0a5d43c2442c49cacc45c7
 
 [[package]]
 name = "py-build-example"
-version = "0.1.0"
+version = "0.2.0"
 source = { virtual = "." }
 dependencies = [
     { name = "example-package" },
+    { name = "py-private-pkg-build-example" },
 ]
 
 [package.metadata]
-requires-dist = [{ name = "example-package", url = "https://github.com/tkoncz/py-pkg-build-example/releases/download/v0.3.0/example_package-0.3.0.tar.gz" }]
+requires-dist = [
+    { name = "example-package", url = "https://github.com/tkoncz/py-pkg-build-example/releases/download/v0.3.0/example_package-0.3.0.tar.gz" },
+    { name = "py-private-pkg-build-example", git = "https://github.com/tkoncz/py-private-pkg-build-example?rev=v0.1.0" },
+]
+
+[[package]]
+name = "py-private-pkg-build-example"
+version = "0.1.0"
+source = { git = "https://github.com/tkoncz/py-private-pkg-build-example?rev=v0.1.0#58dd7c207de772a4e931145d6b4879220307a3fe" }
