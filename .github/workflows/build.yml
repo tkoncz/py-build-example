@@ -10,12 +10,35 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Configure Git credentials for private repos
-        run: |
-          git config --global credential.helper store
-          echo "https://${{ secrets.GH_PAT }}@github.com" > ~/.git-credentials
+      # - name: Configure Git credentials for private repos I
+      #   run: |
+      #     echo "https://${{ secrets.GH_PAT }}@github.com" > /tmp/git-credentials
+      #     git config --global credential.helper "store --file=/tmp/git-credentials"
+      #     git config --global --get credential.helper  # verify
+      #     cat /tmp/git-credentials  # will show masked token
 
-      - name: Check Git authentication
+      - name: Configure Git credentials for private repos II
+        run: |
+          git config --global url."https://${{ secrets.GH_PAT }}@github.com/".insteadOf "https://github.com/"
+          git config --global --get-regexp url
+
+      # - name: Verify Git config
+      #   run: git config --list 
+
+      # - name: Verify Git credentials
+      #   run: |
+      #     # Check if the credentials file exists and has the correct URL format without printing the token
+      #     if grep -q "https://ghp_.*@github.com" /tmp/git-credentials; then
+      #       echo "Git credentials file contains the correct URL format."
+      #     else
+      #       echo "Git credentials file is missing or incorrect!" && exit 1
+      #     fi
+
+      - name: Check Git authentication 1
+        run: |
+          git ls-remote https://${{ secrets.GH_PAT }}@github.com/tkoncz/py-private-pkg-build-example.git
+
+      - name: Check Git authentication 2
         run: |
           git ls-remote https://github.com/tkoncz/py-private-pkg-build-example.git
 
@@ -29,7 +52,7 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version-file: "pyproject.toml"
-  
+
       - name: Install the project
         run: uv sync --all-extras --dev
 
